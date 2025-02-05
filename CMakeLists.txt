@@ -41,14 +41,8 @@ target_sources(${CMAKE_PROJECT_NAME} PRIVATE
     "Core/Src/usart.c"
     "Core/Src/tim.c"
     "Core/Src/gpio.c"
-    "Core/Src/dc_motor.cpp"
-    "Core/Src/motor_driver.cpp"
-    "Core/Src/encoder.cpp"
-    "Core/Src/pwm_device.cpp"
-    "Core/Src/cnt_device.cpp"
+    "Core/Src/a4988.cpp"
     "Core/Src/l298n.cpp"
-    "Core/Src/servo.cpp"
-    "Core/Inc/pid.hpp"
 )
 
 target_include_directories(${CMAKE_PROJECT_NAME} PRIVATE

@@ -1,8 +1,8 @@
 #ifndef MOTOR_DRIVER_HPP
 #define MOTOR_DRIVER_HPP
 
-#include "dc_motor.hpp"
 #include "encoder.hpp"
+#include "h_bridge.hpp"
 #include "pid.hpp"
 #include <utility>
 
@@ -10,8 +10,8 @@ namespace Motors {
 
     struct MotorDriver {
     public:
-        using Value = DCMotor::Voltage;
-        using Direction = DCMotor::Direction;
+        using Value = HBridge::Voltage;
+        using Direction = HBridge::Direction;
         using Regulator = Utility::PID<Value>;
         using SpeedToVoltage = Value (*)(Value) noexcept;
         using SpeedToDirection = Direction (*)(Value) noexcept;
@@ -19,7 +19,7 @@ namespace Motors {
         void operator()(Value const input_speed, Value const dt) noexcept;
 
         Regulator regulator{};
-        DCMotor motor{};
+        HBridge motor{};
         Encoder encoder{};
 
         SpeedToVoltage speed_to_voltage{nullptr};

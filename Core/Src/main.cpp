@@ -1,7 +1,8 @@
 #include "main.h"
-#include "dc_motor.hpp"
+#include "a4988.hpp"
 #include "encoder.hpp"
 #include "gpio.h"
+#include "h_bridge.hpp"
 #include "l298n.hpp"
 #include "motor_driver.hpp"
 #include "pid.hpp"
@@ -50,7 +51,7 @@ void test_motor_driver()
 
     PWMDevice pwm_device{&htim3, TIM_CHANNEL_2, 0UL, htim3.Init.Period, 0.0F, 6.0F};
 
-    DCMotor motor{.pwm_device = std::move(pwm_device),
+    HBridge h_bridge{.pwm_device = std::move(pwm_device),
                   .gpio = L298N_IN1_GPIO_Port,
                   .pin_left = L298N_IN1_Pin,
                   .pin_right = L298N_IN2_Pin};
@@ -61,10 +62,10 @@ void test_motor_driver()
 
     MotorDriver motor_driver{
         .regulator = std::move(regulator),
-        .motor = std::move(motor),
+        .motor = std::move(h_bridge),
         .encoder = std::move(encoder),
         .speed_to_voltage = [](float const speed) noexcept { return 0.0F; },
-        .speed_to_direction = [](float const speed) noexcept { return DCMotor::Direction::SOFT_STOP; }};
+        .speed_to_direction = [](float const speed) noexcept { return HBridge::Direction::SOFT_STOP; }};
 
     while (true) {
         if (sampling_timer_elapsed) {
@@ -78,8 +79,6 @@ int main()
 {
     HAL_Init();
     SystemClock_Config();
-
-    test_motor_driver();
 
     return 0;
 }

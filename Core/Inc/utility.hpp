@@ -1,17 +1,12 @@
 #ifndef UTILITY_HPP
 #define UTILITY_HPP
 
-#include "stm32l4xx.h"
 #include "stm32l4xx_hal.h"
-#include "stm32l4xx_hal_def.h"
 #include "stm32l4xx_hal_gpio.h"
 #include "stm32l4xx_hal_i2c.h"
 #include "stm32l4xx_hal_tim.h"
 #include "stm32l4xx_hal_uart.h"
-#include <concepts>
 #include <cstdint>
-#include <type_traits>
-#include <stm32l476xx.h>
 
 namespace Motors::Utility {
 

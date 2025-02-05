@@ -1,5 +1,4 @@
 #include "servo.hpp"
-#include "stm32l4xx_hal.h"
 #include <array>
 #include <cassert>
 #include <cmath>

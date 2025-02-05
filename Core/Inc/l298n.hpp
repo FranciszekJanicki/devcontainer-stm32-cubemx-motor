@@ -1,51 +1,48 @@
 #ifndef L298N_HPP
 #define L298N_HPP
 
-#include "dc_motor.hpp"
+#include "h_bridge.hpp"
 #include "utility.hpp"
 #include <array>
 #include <cmath>
 #include <cstdint>
-#include <expected>
-#include <tuple>
 #include <utility>
 
 namespace Motors {
 
     struct L298N {
     public:
-        enum struct Channel {
-            CHANNEL1,
-            CHANNEL2,
+        enum struct Channel : std::uint8_t {
+            A,
+            B,
         };
 
-        struct MotorChannel {
+        struct HBridgeChannel {
             Channel channel{};
-            DCMotor motor{};
+            HBridge h_bridge{};
         };
 
-        using Raw = DCMotor::Raw;
-        using Voltage = DCMotor::Voltage;
-        using Direction = DCMotor::Direction;
-        using MotorChannels = std::array<MotorChannel, 2>;
+        using Raw = HBridge::Raw;
+        using Voltage = HBridge::Voltage;
+        using Direction = HBridge::Direction;
 
         void reset() const noexcept;
 
         void set_voltage(Channel const channel, Voltage const voltage) const noexcept;
-        void set_voltage_max(Channel const channel) const noexcept;
-        void set_voltage_min(Channel const channel) const noexcept;
+        void set_max_voltage(Channel const channel) const noexcept;
+        void set_min_voltage(Channel const channel) const noexcept;
 
         void set_direction(Channel const channel, Direction const direction) const noexcept;
-        void set_forward(Channel const channel) const noexcept;
-        void set_backward(Channel const channel) const noexcept;
-        void set_soft_stop(Channel const channel) const noexcept;
-        void set_fast_stop(Channel const channel) const noexcept;
+        void set_forward_direction(Channel const channel) const noexcept;
+        void set_backward_direction(Channel const channel) const noexcept;
+        void set_soft_stop_direction(Channel const channel) const noexcept;
+        void set_fast_stop_direction(Channel const channel) const noexcept;
 
-        MotorChannels motor_channels{};
+        std::array<HBridgeChannel, 2UL> h_bridge_channels{};
 
     private:
-        const DCMotor& get_motor(Channel const channel) const noexcept;
-        DCMotor& get_motor(Channel const channel) noexcept;
+        const HBridge& get_h_bridge(Channel const channel) const noexcept;
+        HBridge& get_h_bridge(Channel const channel) noexcept;
     };
 
 }; // namespace Motors

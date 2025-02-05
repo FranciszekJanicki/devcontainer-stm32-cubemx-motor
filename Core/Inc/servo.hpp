@@ -2,7 +2,6 @@
 #define SERVO_HPP
 
 #include "pwm_device.hpp"
-#include "stm32l4xx_hal.h"
 #include "utility.hpp"
 #include <array>
 #include <cassert>

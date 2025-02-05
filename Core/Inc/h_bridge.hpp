@@ -1,5 +1,5 @@
-#ifndef DC_MOTOR_HPP
-#define DC_MOTOR_HPP
+#ifndef H_BRIDGE_HPP
+#define H_BRIDGE_HPP
 
 #include "pwm_device.hpp"
 #include "stm32l4xx_hal.h"
@@ -9,9 +9,9 @@
 
 namespace Motors {
 
-    struct DCMotor {
+    struct HBridge {
     public:
-        enum struct Direction {
+        enum struct Direction : std::uint8_t {
             FORWARD,
             BACKWARD,
             FAST_STOP,
@@ -22,14 +22,14 @@ namespace Motors {
         using Voltage = Utility::PWMDevice::Voltage;
 
         void set_voltage(Voltage const voltage) const noexcept;
-        void set_voltage_max() const noexcept;
-        void set_voltage_min() const noexcept;
+        void set_max_voltage() const noexcept;
+        void set_min_voltage() const noexcept;
 
         void set_direction(Direction const direction) const noexcept;
-        void set_forward() const noexcept;
-        void set_backward() const noexcept;
-        void set_soft_stop() const noexcept;
-        void set_fast_stop() const noexcept;
+        void set_forward_direction() const noexcept;
+        void set_backward_direction() const noexcept;
+        void set_soft_stop_direction() const noexcept;
+        void set_fast_stop_direction() const noexcept;
 
         Utility::PWMDevice pwm_device{};
 
@@ -40,4 +40,4 @@ namespace Motors {
 
 }; // namespace Motors
 
-#endif // DC_MOTOR_HPP
+#endif // H_BRIDGE_HPP
