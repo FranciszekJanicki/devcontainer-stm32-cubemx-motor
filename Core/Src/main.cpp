@@ -18,7 +18,7 @@ using namespace Utility;
 void test_servo()
 {
     MX_GPIO_Init();
-    MX_TIM3_Init();
+    MX_TIM1_Init();
 
     PWMDevice pwm_device{&htim1, TIM_CHANNEL_2, 0UL, htim1.Init.Period, 0.0F, 180.0F};
 
@@ -33,9 +33,16 @@ void test_servo()
 void test_stepper_driver()
 {
     MX_GPIO_Init();
-    MX_TIM3_Init();
 
-    A4988 a4988{A4988_DIR_GPIO_Port, A4988_MS1_Pin, A4988_MS2_Pin, A4988_MS3_Pin, A4988_RESET_Pin, A4988_SLEEP_Pin, A4988_STEP_Pin, A4988_DIR_Pin, A4988_ENABLE_Pin};
+    A4988 a4988{A4988_DIR_GPIO_Port,
+                A4988_MS1_Pin,
+                A4988_MS2_Pin,
+                A4988_MS3_Pin,
+                A4988_RESET_Pin,
+                A4988_SLEEP_Pin,
+                A4988_STEP_Pin,
+                A4988_DIR_Pin,
+                A4988_ENABLE_Pin};
 
     while (true) {
         a4988.trigger_next_step(A4988::Direction::FORWARD, A4988::StepRes::FULL);
@@ -58,9 +65,9 @@ void HAL_TIM_PeriodElapsedCallback(TIM_HandleTypeDef* htim)
 void test_motor_driver()
 {
     MX_GPIO_Init();
+    MX_TIM1_Init();
     MX_TIM2_Init();
     MX_TIM3_Init();
-    MX_TIM4_Init();
 
     PID<float> regulator{.kp = 1.0F, .ki = 0.0F, .kd = 0.0F, .kc = 0.0F, .saturation = 6.0F};
 

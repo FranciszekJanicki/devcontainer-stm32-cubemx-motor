@@ -31,6 +31,13 @@ namespace Motors {
         this->deinitialize();
     }
 
+    void A4988::trigger_next_step(Direction const direction, StepRes const step_res) const noexcept
+    {
+        this->set_direction(direction);
+        this->set_step_res(step_res);
+        this->set_step(true);
+    }
+
     void A4988::initialize() noexcept
     {
         if (this->gpio_ != nullptr) {
@@ -51,13 +58,6 @@ namespace Motors {
             this->set_step(false);
             this->initialized_ = false;
         }
-    }
-
-    void A4988::trigger_next_step(Direction const direction, StepRes const step_res) const noexcept
-    {
-        this->set_direction(direction);
-        this->set_step_res(step_res);
-        this->set_step(true);
     }
 
     void A4988::set_step(bool const step) const noexcept

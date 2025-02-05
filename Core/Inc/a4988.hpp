@@ -41,13 +41,13 @@ namespace Motors {
 
         ~A4988() noexcept;
 
+        void trigger_next_step(Direction const direction, StepRes const step_res) const noexcept;
+
     private:
         static constexpr std::uint64_t COUNTER_PERIOD{1000UL};
 
         void initialize() noexcept;
         void deinitialize() noexcept;
-
-        void trigger_next_step(Direction const direction, StepRes const step_res) const noexcept;
 
         void set_step_res(StepRes const step_res) const noexcept;
         void set_full_step_res() const noexcept;
