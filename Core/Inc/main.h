@@ -27,7 +27,6 @@ extern "C" {
 #endif
 
 /* Includes ------------------------------------------------------------------*/
-#include "stm32l4xx.h"
 #include "stm32l4xx_hal.h"
 
 /* Private includes ----------------------------------------------------------*/
@@ -62,18 +61,36 @@ void Error_Handler(void);
 #define USART_TX_GPIO_Port GPIOA
 #define USART_RX_Pin GPIO_PIN_3
 #define USART_RX_GPIO_Port GPIOA
-#define L298N_IN1_Pin GPIO_PIN_0
+#define A4988_SLEEP_Pin GPIO_PIN_0
+#define A4988_SLEEP_GPIO_Port GPIOB
+#define A4988_ENABLE_Pin GPIO_PIN_1
+#define A4988_ENABLE_GPIO_Port GPIOB
+#define L298N_IN1_Pin GPIO_PIN_2
 #define L298N_IN1_GPIO_Port GPIOB
-#define L298N_IN2_Pin GPIO_PIN_1
-#define L298N_IN2_GPIO_Port GPIOB
-#define L298N_ENA_Pin GPIO_PIN_11
-#define L298N_ENA_GPIO_Port GPIOA
+#define A4988_STEP_Pin GPIO_PIN_10
+#define A4988_STEP_GPIO_Port GPIOB
+#define A4988_RESET_Pin GPIO_PIN_11
+#define A4988_RESET_GPIO_Port GPIOB
+#define A4988_DIR_Pin GPIO_PIN_12
+#define A4988_DIR_GPIO_Port GPIOB
 #define TMS_Pin GPIO_PIN_13
 #define TMS_GPIO_Port GPIOA
 #define TCK_Pin GPIO_PIN_14
 #define TCK_GPIO_Port GPIOA
 #define SWO_Pin GPIO_PIN_3
 #define SWO_GPIO_Port GPIOB
+#define L298N_IN2_Pin GPIO_PIN_4
+#define L298N_IN2_GPIO_Port GPIOB
+#define L298N_IN3_Pin GPIO_PIN_5
+#define L298N_IN3_GPIO_Port GPIOB
+#define L298N_IN4_Pin GPIO_PIN_6
+#define L298N_IN4_GPIO_Port GPIOB
+#define A4988_MS1_Pin GPIO_PIN_7
+#define A4988_MS1_GPIO_Port GPIOB
+#define A4988_MS2_Pin GPIO_PIN_8
+#define A4988_MS2_GPIO_Port GPIOB
+#define A4988_MS3_Pin GPIO_PIN_9
+#define A4988_MS3_GPIO_Port GPIOB
 
 /* USER CODE BEGIN Private defines */
 

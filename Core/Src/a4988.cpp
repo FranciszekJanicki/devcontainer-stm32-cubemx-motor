@@ -97,9 +97,7 @@ namespace Motors {
     void A4988::set_full_step_res() const noexcept
     {
         if (this->initialized_) {
-            HAL_GPIO_WritePin(this->gpio_, this->ms1_, GPIO_PinState::GPIO_PIN_RESET);
-            HAL_GPIO_WritePin(this->gpio_, this->ms2_, GPIO_PinState::GPIO_PIN_RESET);
-            HAL_GPIO_WritePin(this->gpio_, this->ms3_, GPIO_PinState::GPIO_PIN_RESET);
+            HAL_GPIO_WritePin(this->gpio_, this->ms1_ | this->ms2_ | this->ms3_, GPIO_PinState::GPIO_PIN_RESET);
         }
     }
 
@@ -107,25 +105,22 @@ namespace Motors {
     {
         if (this->initialized_) {
             HAL_GPIO_WritePin(this->gpio_, this->ms1_, GPIO_PinState::GPIO_PIN_SET);
-            HAL_GPIO_WritePin(this->gpio_, this->ms2_, GPIO_PinState::GPIO_PIN_RESET);
-            HAL_GPIO_WritePin(this->gpio_, this->ms3_, GPIO_PinState::GPIO_PIN_RESET);
+            HAL_GPIO_WritePin(this->gpio_, this->ms2_ | this->ms3_, GPIO_PinState::GPIO_PIN_RESET);
         }
     }
 
     void A4988::set_quarter_step_res() const noexcept
     {
         if (this->initialized_) {
-            HAL_GPIO_WritePin(this->gpio_, this->ms1_, GPIO_PinState::GPIO_PIN_RESET);
+            HAL_GPIO_WritePin(this->gpio_, this->ms1_ | this->ms3_, GPIO_PinState::GPIO_PIN_RESET);
             HAL_GPIO_WritePin(this->gpio_, this->ms2_, GPIO_PinState::GPIO_PIN_SET);
-            HAL_GPIO_WritePin(this->gpio_, this->ms3_, GPIO_PinState::GPIO_PIN_RESET);
         }
     }
 
     void A4988::set_eighth_step_res() const noexcept
     {
         if (this->initialized_) {
-            HAL_GPIO_WritePin(this->gpio_, this->ms1_, GPIO_PinState::GPIO_PIN_SET);
-            HAL_GPIO_WritePin(this->gpio_, this->ms2_, GPIO_PinState::GPIO_PIN_SET);
+            HAL_GPIO_WritePin(this->gpio_, this->ms1_ | this->ms2_, GPIO_PinState::GPIO_PIN_SET);
             HAL_GPIO_WritePin(this->gpio_, this->ms3_, GPIO_PinState::GPIO_PIN_RESET);
         }
     }
@@ -133,9 +128,7 @@ namespace Motors {
     void A4988::set_sixteenth_step_res() const noexcept
     {
         if (this->initialized_) {
-            HAL_GPIO_WritePin(this->gpio_, this->ms1_, GPIO_PinState::GPIO_PIN_SET);
-            HAL_GPIO_WritePin(this->gpio_, this->ms2_, GPIO_PinState::GPIO_PIN_SET);
-            HAL_GPIO_WritePin(this->gpio_, this->ms3_, GPIO_PinState::GPIO_PIN_SET);
+            HAL_GPIO_WritePin(this->gpio_, this->ms1_ | this->ms2_ | this->ms3_, GPIO_PinState::GPIO_PIN_SET);
         }
     }
 
