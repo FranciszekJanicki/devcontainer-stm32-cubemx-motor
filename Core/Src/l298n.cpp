@@ -10,8 +10,6 @@ using namespace Motors;
 using Direction = L298N::Direction;
 using Channel = L298N::Channel;
 using HBridgeChannel = L298N::HBridgeChannel;
-using Raw = L298N::Raw;
-using Voltage = L298N::Voltage;
 using Direction = L298N::Direction;
 
 namespace Motors {
@@ -24,7 +22,7 @@ namespace Motors {
         });
     }
 
-    void L298N::set_voltage(Channel const channel, Voltage const voltage) const noexcept
+    void L298N::set_voltage(Channel const channel, float const voltage) const noexcept
     {
         this->get_h_bridge(channel).set_voltage(voltage);
     }

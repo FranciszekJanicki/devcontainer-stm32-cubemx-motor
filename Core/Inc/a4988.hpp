@@ -1,6 +1,7 @@
 #ifndef A4988_HPP
 #define A4988_HPP
 
+#include "pwm_device.hpp"
 #include "stm32l4xx_hal.h"
 #include "utility.hpp"
 #include <cstdint>
@@ -22,8 +23,10 @@ namespace Motors {
             BACKWARD,
         };
 
+        using GPIOHandle = Utility::GPIOHandle;
+
         A4988() noexcept = default;
-        A4988(Utility::GPIOHandle const gpio,
+        A4988(GPIOHandle const gpio,
               std::uint16_t const ms1,
               std::uint16_t const ms2,
               std::uint16_t const ms3,
@@ -65,7 +68,7 @@ namespace Motors {
         void set_sleep(bool const sleep) const noexcept;
         void set_step(bool const step) const noexcept;
 
-        Utility::GPIOHandle gpio_{nullptr};
+        GPIOHandle gpio_{nullptr};
         std::uint16_t ms1_{};
         std::uint16_t ms2_{};
         std::uint16_t ms3_{};

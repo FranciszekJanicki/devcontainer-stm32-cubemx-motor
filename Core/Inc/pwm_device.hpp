@@ -9,16 +9,15 @@ namespace Motors::Utility {
 
     struct PWMDevice {
     public:
-        using Voltage = float;
-        using Raw = std::uint32_t;
+        using TIMHandle = Utility::TIMHandle;
 
         PWMDevice() noexcept = default;
         PWMDevice(TIMHandle const timer,
                   std::uint32_t const timer_channel,
-                  Raw const min_raw,
-                  Raw const max_raw,
-                  Voltage const min_voltage,
-                  Voltage const max_voltage) noexcept;
+                  std::uint32_t const min_raw,
+                  std::uint32_t const max_raw,
+                  float const min_voltage,
+                  float const max_voltage) noexcept;
 
         PWMDevice(PWMDevice const& other) noexcept = delete;
         PWMDevice(PWMDevice&& other) noexcept = default;
@@ -28,8 +27,8 @@ namespace Motors::Utility {
 
         ~PWMDevice() noexcept;
 
-        void set_compare_raw(Raw const raw) const noexcept;
-        void set_compare_voltage(Voltage const voltage) const noexcept;
+        void set_compare_raw(std::uint32_t const raw) const noexcept;
+        void set_compare_voltage(float const voltage) const noexcept;
         void set_compare_max() const noexcept;
         void set_compare_min() const noexcept;
 
@@ -37,18 +36,18 @@ namespace Motors::Utility {
         void initialize() noexcept;
         void deinitialize() noexcept;
 
-        Raw voltage_to_raw(Voltage const voltage) const noexcept;
-        Voltage raw_to_voltage(Raw const raw) const noexcept;
+        std::uint32_t voltage_to_raw(float const voltage) const noexcept;
+        float raw_to_voltage(std::uint32_t const raw) const noexcept;
 
         bool initialized_{false};
 
         TIMHandle timer_{nullptr};
         std::uint32_t timer_channel_{};
 
-        Raw min_raw_{};
-        Raw max_raw_{};
-        Voltage min_voltage_{};
-        Voltage max_voltage_{};
+        std::uint32_t min_raw_{};
+        std::uint32_t max_raw_{};
+        float min_voltage_{};
+        float max_voltage_{};
     };
 
 }; // namespace Motors::Utility

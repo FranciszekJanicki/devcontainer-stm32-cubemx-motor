@@ -13,8 +13,8 @@ namespace Motors {
     struct L298N {
     public:
         enum struct Channel : std::uint8_t {
-            A,
-            B,
+            CHANNEL_A,
+            CHANNEL_B,
         };
 
         struct HBridgeChannel {
@@ -22,13 +22,11 @@ namespace Motors {
             HBridge h_bridge{};
         };
 
-        using Raw = HBridge::Raw;
-        using Voltage = HBridge::Voltage;
         using Direction = HBridge::Direction;
 
         void reset() const noexcept;
 
-        void set_voltage(Channel const channel, Voltage const voltage) const noexcept;
+        void set_voltage(Channel const channel, float const voltage) const noexcept;
         void set_max_voltage(Channel const channel) const noexcept;
         void set_min_voltage(Channel const channel) const noexcept;
 
@@ -41,7 +39,7 @@ namespace Motors {
         std::array<HBridgeChannel, 2UL> h_bridge_channels{};
 
     private:
-        const HBridge& get_h_bridge(Channel const channel) const noexcept;
+        HBridge const& get_h_bridge(Channel const channel) const noexcept;
         HBridge& get_h_bridge(Channel const channel) noexcept;
     };
 

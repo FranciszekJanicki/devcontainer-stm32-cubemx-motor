@@ -18,10 +18,10 @@ namespace Motors {
             SOFT_STOP,
         };
 
-        using Raw = Utility::PWMDevice::Raw;
-        using Voltage = Utility::PWMDevice::Voltage;
+        using PWMDevice = Utility::PWMDevice;
+        using GPIOHandle = Utility::GPIOHandle;
 
-        void set_voltage(Voltage const voltage) const noexcept;
+        void set_voltage(float const voltage) const noexcept;
         void set_max_voltage() const noexcept;
         void set_min_voltage() const noexcept;
 

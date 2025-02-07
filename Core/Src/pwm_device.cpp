@@ -5,17 +5,17 @@
 #include <utility>
 
 using namespace Motors::Utility;
-using Raw = PWMDevice::Raw;
-using Voltage = PWMDevice::Voltage;
+using std::uint32_t = PWMDevice::std::uint32_t;
+using float = PWMDevice::float;
 
 namespace Motors::Utility {
 
     PWMDevice::PWMDevice(TIMHandle const timer,
                          std::uint32_t const timer_channel,
-                         Raw const min_raw,
-                         Raw const max_raw,
-                         Voltage const min_voltage,
-                         Voltage const max_voltage) noexcept :
+                         std::uint32_t const min_raw,
+                         std::uint32_t const max_raw,
+                         float const min_voltage,
+                         float const max_voltage) noexcept :
         timer_{timer},
         timer_channel_{timer_channel},
         min_raw_{min_raw},
@@ -31,14 +31,14 @@ namespace Motors::Utility {
         this->deinitialize();
     }
 
-    void PWMDevice::set_compare_raw(Raw const raw) const noexcept
+    void PWMDevice::set_compare_raw(std::uint32_t const raw) const noexcept
     {
         if (this->initialized_) {
             __HAL_TIM_SetCompare(this->timer_, this->timer_channel_, raw);
         }
     }
 
-    void PWMDevice::set_compare_voltage(Voltage const voltage) const noexcept
+    void PWMDevice::set_compare_voltage(float const voltage) const noexcept
     {
         this->set_compare_raw(this->voltage_to_raw(voltage));
     }
@@ -51,6 +51,11 @@ namespace Motors::Utility {
     void PWMDevice::set_compare_min() const noexcept
     {
         this->set_compare_raw(this->min_raw_);
+    }
+
+    void PWMDevice::set_counter_period(std::uint32_t const counter_period) noexcept
+    {
+        this->timer_->Init.Period
     }
 
     void PWMDevice::initialize() noexcept
@@ -71,13 +76,13 @@ namespace Motors::Utility {
         }
     }
 
-    Raw PWMDevice::voltage_to_raw(Voltage const voltage) const noexcept
+    std::uint32_t PWMDevice::voltage_to_raw(float const voltage) const noexcept
     {
         return (std::clamp(voltage, this->min_voltage_, this->max_voltage_) - this->min_voltage_) *
                (this->max_raw_ - this->min_raw_) / (this->max_voltage_ - this->min_voltage_);
     }
 
-    Voltage PWMDevice::raw_to_voltage(Raw const raw) const noexcept
+    float PWMDevice::raw_to_voltage(std::uint32_t const raw) const noexcept
     {
         return std::clamp(raw, this->min_raw_, this->max_raw_) * (this->max_voltage_ - this->min_voltage_) /
                    (this->max_raw_ - this->min_raw_) +

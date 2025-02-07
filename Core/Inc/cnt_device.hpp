@@ -11,11 +11,10 @@ namespace Motors::Utility {
 
     struct CNTDevice {
     public:
-        using Count = std::uint32_t;
-        using OptionalCount = std::optional<Count>;
+        using TIMHandle = Utility::TIMHandle;
 
         CNTDevice() noexcept = default;
-        CNTDevice(TIMHandle const timer, Count const counter_period) noexcept;
+        CNTDevice(TIMHandle const timer, std::uint32_t const counter_period) noexcept;
 
         CNTDevice(CNTDevice const& other) = delete;
         CNTDevice(CNTDevice&& other) noexcept = default;
@@ -25,11 +24,11 @@ namespace Motors::Utility {
 
         ~CNTDevice() noexcept;
 
-        [[nodiscard]] OptionalCount get_count() const noexcept;
-        [[nodiscard]] OptionalCount get_count_difference() const noexcept;
+        [[nodiscard]] std::optional<std::uint32_t> get_count() const noexcept;
+        [[nodiscard]] std::optional<std::uint32_t> get_count_difference() const noexcept;
 
     private:
-        Count get_current_count() const noexcept;
+        std::uint32_t get_current_count() const noexcept;
 
         void initialize() noexcept;
         void deinitialize() noexcept;
@@ -37,9 +36,9 @@ namespace Motors::Utility {
         bool initialized_{false};
 
         TIMHandle timer_{nullptr};
-        Count counter_period_{};
+        std::uint32_t counter_period_{};
 
-        Count mutable count_{};
+        std::uint32_t mutable count_{};
     };
 
 }; // namespace Motors::Utility

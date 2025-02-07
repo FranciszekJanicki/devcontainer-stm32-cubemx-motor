@@ -4,7 +4,7 @@
 
 namespace Motors {
 
-    A4988::A4988(Utility::GPIOHandle const gpio,
+    A4988::A4988(GPIOHandle const gpio,
                  std::uint16_t const ms1,
                  std::uint16_t const ms2,
                  std::uint16_t const ms3,
@@ -13,15 +13,7 @@ namespace Motors {
                  std::uint16_t const step,
                  std::uint16_t const dir,
                  std::uint16_t const enable) noexcept :
-        gpio_{gpio},
-        ms1_{ms1},
-        ms2_{ms2},
-        ms3_{ms3},
-        reset_{reset},
-        sleep_{sleep},
-        step_{step},
-        dir_{dir},
-        enable_{enable}
+        ms1_{ms1}, ms2_{ms2}, ms3_{ms3}, reset_{reset}, sleep_{sleep}, step_{step}, dir_{dir}, enable_{enable}
     {
         this->initialize();
     }

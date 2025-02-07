@@ -1,10 +1,10 @@
 #include "main.h"
 #include "a4988.hpp"
+#include "dc_motor.hpp"
 #include "encoder.hpp"
 #include "gpio.h"
 #include "h_bridge.hpp"
 #include "l298n.hpp"
-#include "motor_driver.hpp"
 #include "pid.hpp"
 #include "pwm_device.hpp"
 #include "servo.hpp"
@@ -33,6 +33,8 @@ void test_servo()
 void test_stepper_driver()
 {
     MX_GPIO_Init();
+
+    PWMDevice pwm_device(&htim1, TIM_CHANNEL_4, 0UL, 1UL, 0.0F, 3.3F);
 
     A4988 a4988{A4988_DIR_GPIO_Port,
                 A4988_MS1_Pin,
@@ -69,7 +71,11 @@ void test_motor_driver()
     MX_TIM2_Init();
     MX_TIM3_Init();
 
-    PID<float> regulator{.kp = 1.0F, .ki = 0.0F, .kd = 0.0F, .kc = 0.0F, .saturation = 6.0F};
+    PID<float> regulator{.proportion_gain = 1.0F,
+                         .integral_gain = 0.0F,
+                         .derivative_gain = 0.0F,
+                         .control_gain = 0.0F,
+                         .saturation = 6.0F};
 
     PWMDevice pwm_device{&htim1, TIM_CHANNEL_2, 0UL, htim1.Init.Period, 0.0F, 6.0F};
 
@@ -82,7 +88,7 @@ void test_motor_driver()
 
     Encoder encoder{.cnt_device = std::move(cnt_device), .counts_per_pulse = 1UL, .pulses_per_360 = 52UL};
 
-    MotorDriver motor_driver{
+    DCMotor motor_driver{
         .regulator = std::move(regulator),
         .motor = std::move(h_bridge),
         .encoder = std::move(encoder),

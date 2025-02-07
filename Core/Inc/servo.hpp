@@ -13,26 +13,25 @@ namespace Motors {
 
     struct Servo {
     public:
-        using Angle = float;
-        using Voltage = Utility::PWMDevice::Voltage;
-        using AngleToVoltage = Voltage (*)(Angle) noexcept;
+        using PWMDevice = Utility::PWMDevice;
+        using FloatToFloat = float (*)(float) noexcept;
 
-        void set_angle(Angle const angle) const noexcept;
+        void set_angle(float const angle) const noexcept;
         void set_angle_max() const noexcept;
         void set_angle_min() const noexcept;
 
-        template <typename... Angles>
-        void run_sequence(Angles const... angles) noexcept
+        template <typename... floats>
+        void run_sequence(floats const... angles) noexcept
         {
-            for (auto const angle : std::array<Angle, sizeof...(angles)>{angles...}) {
+            for (auto const angle : std::array<float, sizeof...(angles)>{angles...}) {
                 this->set_angle(angle);
                 HAL_Delay(50);
             }
         }
 
-        AngleToVoltage angle_to_voltage{};
+        FloatToFloat angle_to_voltage{nullptr};
 
-        Utility::PWMDevice pwm_device{};
+        PWMDevice pwm_device{};
     };
 
 }; // namespace Motors

@@ -12,25 +12,21 @@ namespace Motors {
 
     struct Encoder {
     public:
-        using Count = Utility::CNTDevice::Count;
-        using Angle = std::float_t;
-        using Speed = std::float_t;
-        using OptionalAngle = std::optional<Angle>;
-        using OptionalSpeed = std::optional<Speed>;
+        using CNTDevice = Utility::CNTDevice;
 
-        [[nodiscard]] OptionalAngle get_angle_degrees() const noexcept;
-        [[nodiscard]] OptionalAngle get_angle_radians() const noexcept;
-        [[nodiscard]] OptionalSpeed get_speed_degrees(float const dt) const noexcept;
-        [[nodiscard]] OptionalSpeed get_speed_radians(float const dt) const noexcept;
+        [[nodiscard]] std::optional<float> get_angle_degrees() const noexcept;
+        [[nodiscard]] std::optional<float> get_angle_radians() const noexcept;
+        [[nodiscard]] std::optional<float> get_speed_degrees(float const dt) const noexcept;
+        [[nodiscard]] std::optional<float> get_speed_radians(float const dt) const noexcept;
 
-        Utility::CNTDevice cnt_device{};
+        CNTDevice cnt_device{};
 
-        Count counts_per_pulse{};
-        Count pulses_per_360{};
+        std::uint32_t counts_per_pulse{};
+        std::uint32_t pulses_per_360{};
 
     private:
-        Angle count_to_degrees(Count const count) const noexcept;
-        Angle count_to_degree_diff(Count const count_diff) const noexcept;
+        float count_to_degrees(std::uint32_t const count) const noexcept;
+        float count_to_degree_diff(std::uint32_t const count_diff) const noexcept;
     };
 
 }; // namespace Motors

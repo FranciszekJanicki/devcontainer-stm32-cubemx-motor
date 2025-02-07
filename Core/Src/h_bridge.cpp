@@ -6,13 +6,10 @@
 #include <utility>
 
 using namespace Motors;
-using Direction = HBridge::Direction;
-using Raw = HBridge::Raw;
-using Voltage = HBridge::Voltage;
 
 namespace Motors {
 
-    void HBridge::set_voltage(Voltage const voltage) const noexcept
+    void HBridge::set_voltage(float const voltage) const noexcept
     {
         this->pwm_device.set_compare_voltage(voltage);
     }

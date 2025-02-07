@@ -9,58 +9,61 @@
 
 namespace Motors::Utility {
 
-    template <typename Value>
-    [[nodiscard]] auto derivative(Value const value, Value const prev_value, Value const dt) -> Value
-    {
-        if (dt == Value{0}) {
-            std::unreachable();
-        }
-        return (value - prev_value) / dt;
-    }
-
-    template <typename Value>
-    [[nodiscard]] auto integral(Value const value, Value const prev_value, Value const dt) noexcept -> Value
-    {
-        return (value + prev_value) / 2.0F * dt;
-    }
-
-    template <typename Value>
+    template <typename T>
     struct PID {
-        [[nodiscard]] auto operator()(Value const error, Value const dt) noexcept -> Value
+        [[nodiscard]] T operator()(T const error, T const sampling_time) noexcept
         {
-            return this->get_control(error, dt);
+            return this->get_control(error, sampling_time);
         }
 
-        auto get_control(Value const error, Value const dt) noexcept -> Value
+        [[nodiscard]] T get_control(T const error, T const sampling_time) noexcept
         {
-            auto control{this->kp * error + this->ki * this->get_integral(error, dt) +
-                         this->kd * this->get_derivative(error, dt)};
-            auto sat_control{std::clamp(control, -this->saturation, this->saturation)};
-            this->prev_sat_error = control - sat_control;
-            return sat_control;
+            auto control{this->get_proportion(error) + this->get_integral(error, sampling_time) +
+                         this->get_derivative(error, sampling_time)};
+            auto saturated_control{std::clamp(control, -this->saturation, this->saturation)};
+            this->prev_sat_error = std::exchange(this->sat_error, control - saturated_control);
+            this->prev_error = error;
+            return saturated_control;
         }
 
-        auto get_derivative(Value const error, Value const dt) noexcept -> Value
+        [[nodiscard]] T get_proportion(T const error) noexcept
         {
-            return derivative(error, std::exchange(this->prev_error, error), dt);
+            return this->proportion_gain * error;
         }
 
-        auto get_integral(Value const error, Value const dt) noexcept -> Value
+        [[nodiscard]] T get_derivative(T const error, T const sampling_time) noexcept
         {
-            auto integrated{this->ki == Value{0} ? error : error - this->kc * this->prev_sat_error / this->ki};
-            return this->prev_integral += integral(integrated, std::exchange(this->prev_integrated, integrated), dt);
+            this->error_derivative =
+                differentiate(error, this->prev_error, sampling_time, this->error_derivative, this->time_constant);
+            return this->derivative_gain * this->error_derivative;
         }
 
-        Value kp{};
-        Value ki{};
-        Value kd{};
-        Value kc{};
-        Value saturation{};
+        [[nodiscard]] T get_integral(T const error, T const sampling_time) noexcept
+        {
+            this->error_integral += integrate(error, this->prev_error, sampling_time);
+            this->sat_error_integral += integrate(this->sat_error, this->prev_sat_error, sampling_time);
+            return this->integral_gain * this->error_integral - this->control_gain * this->sat_error_integral;
+        }
 
-        Value prev_integral{0.0F};
-        Value prev_error{0.0F};
-        Value prev_sat_error{0.0F};
-        Value prev_integrated{0.0F};
+        // basic PID parameters
+        T proportion_gain{};
+        T integral_gain{};
+        T derivative_gain{};
+        T time_constant{};
+
+        // anti windup parameters
+        T control_gain{};
+        T saturation{};
+
+        // basic PID internal state
+        T prev_error{0.0F};
+        T error_integral{0.0F};
+        T error_derivative{0.0F};
+
+        // anti windup internal state
+        T sat_error{0.0F};
+        T prev_sat_error{0.0F};
+        T sat_error_integral{0.0F};
     };
 
 }; // namespace Motors::Utility

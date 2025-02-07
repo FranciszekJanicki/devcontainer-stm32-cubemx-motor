@@ -6,11 +6,11 @@
 #include <utility>
 
 using namespace Motors;
-using Angle = Servo::Angle;
+using float = Servo::float;
 
 namespace Motors {
 
-    void Servo::set_angle(Angle const angle) const noexcept
+    void Servo::set_angle(float const angle) const noexcept
     {
         this->pwm_device.set_compare_voltage(std::invoke(this->angle_to_voltage, angle));
     }
